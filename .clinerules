@@ -32,7 +32,8 @@ cline は GitHub から学習した広範な知識を持っており、特定の
 
 ## 周辺サービス
 
-Slack -> Bolt ->
+User (Slack) → Lambda (受付) → SQS Queue → [Worker] → Whisper + LLM → Slack通知
+
 
 ### Slack
 
@@ -40,8 +41,8 @@ Slack Bolt API を用いて Slack app と疎通を行う。
 
 ### Lambda
 
+### SQS Queue
 
-### MCP server
 
 
 ## アーキテクチャ設計
@@ -88,6 +89,7 @@ Slack Bolt API を用いて Slack app と疎通を行う。
 - テスト可能性を設計に組み込む
 - アサートファースト：期待結果から逆算 (テスト駆動開発)
 - Arrange-Act-Assert による読みやすいテストコードを書くこと
+- Arrange-Act-Assert のコメントは自明なので不要
 - describe を適切にネストさせて、コンテキストを整理する
 
 ### E2E テスト
