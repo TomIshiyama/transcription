@@ -10,6 +10,7 @@ import { ProofreadingResult } from "../types";
 import { logger } from "../utils/logger";
 import { OPENAI_API_KEY } from "../constants/environment";
 import { proofreadingPrompt } from "../constants/prompt";
+import { defaultOpenAIModel } from "../constants/llm";
 
 export class ProofreadingService {
   private openai: OpenAI;
@@ -66,7 +67,7 @@ export class ProofreadingService {
     try {
       // OpenAIのChat APIを使用
       const response = await this.openai.chat.completions.create({
-        model: "gpt-4o",
+        model: defaultOpenAIModel,
         messages: [
           {
             role: "system",

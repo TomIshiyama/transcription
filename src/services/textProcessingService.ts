@@ -9,6 +9,7 @@ import OpenAI from "openai";
 import { logger } from "../utils/logger";
 import { OPENAI_API_KEY } from "../constants/environment";
 import { proofreadingPrompt, summarizationPrompt } from "../constants/prompt";
+import { defaultOpenAIModel } from "../constants/llm";
 
 export interface TextProcessingResult {
   originalText: string;
@@ -77,7 +78,7 @@ export class TextProcessingService {
     try {
       // OpenAIのChat APIを使用
       const response = await this.openai.chat.completions.create({
-        model: "gpt-4o",
+        model: defaultOpenAIModel,
         messages: [
           {
             role: "system",
@@ -113,7 +114,7 @@ export class TextProcessingService {
     try {
       // OpenAIのChat APIを使用
       const response = await this.openai.chat.completions.create({
-        model: "gpt-4o",
+        model: defaultOpenAIModel,
         messages: [
           {
             role: "system",

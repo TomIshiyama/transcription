@@ -10,6 +10,7 @@ import OpenAI from "openai";
 import { logger } from "../utils/logger";
 import { OPENAI_API_KEY } from "../constants/environment";
 import { proofreadingSummarizationPrompt } from "../constants/prompt";
+import { defaultOpenAIModel } from "../constants/llm";
 
 // ../types.ts での変更を想定
 export interface SummaryResult {
@@ -109,7 +110,7 @@ export class ProofReadSummarizationService {
     text: string,
     options?: SummarizeOptions
   ): Promise<string> {
-    const model = options?.model || "gpt-4o";
+    const model = options?.model || defaultOpenAIModel;
     const temperature = options?.temperature ?? 0.3; // nullish coalescing operator を使用
     const maxTokens = options?.maxTokens ?? 2000;
     const systemPrompt = options?.prompt || proofreadingSummarizationPrompt;
