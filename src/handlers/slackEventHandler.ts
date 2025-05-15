@@ -80,7 +80,7 @@ export class SlackEventHandler {
         .with(
           { text: P.nullish, filetype: P.union(...availableFormat) },
           () => {
-            say("文字起こしと要約実行中");
+            messageService.requestEach();
           }
         )
         .otherwise(() => messageService.doOtherwise());
