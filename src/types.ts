@@ -38,3 +38,17 @@ export type SummaryResult = {
   duration: number;
   requestType: "summary";
 };
+
+// 校正リクエストの型定義
+export type ProofreadingRequest = {
+  text: string;
+  requestType: "proofreading";
+};
+
+// 校正結果の型定義
+export type ProofreadingResult = {
+  originalText: string;
+  correctedText: string;
+  duration: number;
+  requestType: "proofreading";
+};
