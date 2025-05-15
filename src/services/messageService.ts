@@ -8,6 +8,7 @@ import {
 import { SlackEventHandler } from "../handlers/slackEventHandler";
 import { availableFormat, availableText } from "../constants/whisper";
 import { TranscriptionService } from "./transcriptionService";
+import { SummarizationService } from "./summarizationService";
 
 type File = any; // TODO
 
@@ -20,12 +21,14 @@ export class MessageService {
   private say: SayFn;
   private file: any;
   private transcriptionService: TranscriptionService;
+  private summarizationService: SummarizationService;
 
   constructor(e: SlackEventHandler, say: SayFn, f: File) {
     this.event = e;
     this.say = say;
     this.file = f;
     this.transcriptionService = new TranscriptionService();
+    this.summarizationService = new SummarizationService();
   }
 
   /**
@@ -74,7 +77,9 @@ export class MessageService {
       this.file.filetype
     );
     // TODO: 外部API接続サービス テキストを要約する。
-    const result = transcription;
+    const result = await this.summarizationService.summarizeText(
+      transcription.text
+    );
     this.say({ text: result.text });
   }
 
