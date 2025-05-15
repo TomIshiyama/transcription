@@ -7,7 +7,9 @@
     "build": "tsc",
     "start": "node dist/app.js",
     "dev": "node --watch --env-file=.env -r ts-node/register ./src/app.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tunnel": "npx localtunnel --port 3456 --subdomain zackly-app-dev",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +17,7 @@
   "packageManager": "pnpm@8.14.1+sha1.d039b38e0b20ad012ed548e44267b8d4c88b447a",
   "dependencies": {
     "@slack/bolt": "^4.2.1",
+    "openai": "^4.98.0",
     "ts-pattern": "^5.7.0"
   },
   "devDependencies": {
@@ -22,6 +25,7 @@
     "@types/node": "^20.11.0",
     "localtunnel": "^2.0.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.3"
   }
 }
