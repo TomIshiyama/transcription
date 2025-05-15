@@ -8,6 +8,9 @@ import {
 import { SlackEventHandler } from "../handlers/slackEventHandler";
 import { availableFormat, availableText } from "../constants/whisper";
 import { TranscriptionService } from "./transcriptionService";
+import { SummarizationService } from "./summarizationService";
+import { ProofReadSummarizationService } from "./proofreadSummarizationService";
+import { ProofreadingService } from "./proofreadingService";
 
 type File = any; // TODO
 
@@ -20,12 +23,18 @@ export class MessageService {
   private say: SayFn;
   private file: any;
   private transcriptionService: TranscriptionService;
+  private summarizationService: SummarizationService;
+  private proofreadingService: ProofreadingService;
+  private proofReadSummarizationService: ProofReadSummarizationService;
 
   constructor(e: SlackEventHandler, say: SayFn, f: File) {
     this.event = e;
     this.say = say;
     this.file = f;
     this.transcriptionService = new TranscriptionService();
+    this.summarizationService = new SummarizationService();
+    this.proofreadingService = new ProofreadingService();
+    this.proofReadSummarizationService = new ProofReadSummarizationService();
   }
 
   /**
@@ -34,37 +43,37 @@ export class MessageService {
    * @returns 文字起こし結果
    */
   public async requestTranscription(): // request: TranscriptionRequest
-  Promise<TranscriptionResult> {
+  Promise<void> {
     await this.say({
       text: "文字起こしリクエストを受け付けました。",
       thread_ts: this.event.ts,
     });
 
-    // TODO: 実装では、ここでWhisperやLLMのAPIを呼び出す
+    const transcription = await this.transcriptionService.transcribeAudio(
+      this.file.url_private_download,
+      this.file.filetype
+    );
 
-    // fetch()
-    // ダミーの結果を返す;
-    return {
-      text: "これはダミーの文字起こし結果です。実際の実装では、WhisperやLLMのAPIを使用して文字起こしを行います。",
-      duration: 60,
-      requestType: "transcription",
-    };
+    const result = await this.proofreadingService.proofreadText(
+      transcription.text
+    );
+
+    this.say({ text: result.correctedText });
   }
 
   public async requestSummary(): // TranscriptionRequest
-  Promise<SummaryResult> {
+  Promise<void> {
     await this.say({
-      text: "要約リクエストを受け付けました。",
+      text: "要約リクエストを受け付けました。出力までしばらくお待ち下さい。",
       thread_ts: this.event.ts,
     });
 
-    // 実装では、ここでWhisperやLLMのAPIを呼び出す
-    // fetch()
-    return {
-      text: "これはダミーの要約結果です。実際の実装では、LLMのAPIを使用して要約を生成します。",
-      duration: 60,
-      requestType: "summary",
-    };
+    const result = await this.summarizationService.summarizeText(
+      this.file.url_private_download,
+      this.file.filetype
+    );
+
+    this.say({ text: result.text });
   }
 
   public async requestEach(): Promise<void> {
@@ -74,7 +83,11 @@ export class MessageService {
       this.file.filetype
     );
     // TODO: 外部API接続サービス テキストを要約する。
+    // const result = await this.proofReadSummarizationService.summarizeText(
+    //   transcription.text
+    // );
     const result = transcription;
+
     this.say({ text: result.text });
   }
 
