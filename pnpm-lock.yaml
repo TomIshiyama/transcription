@@ -19,6 +19,9 @@ devDependencies:
   '@biomejs/biome':
     specifier: 1.9.4
     version: 1.9.4
+  '@types/aws-lambda':
+    specifier: ^8.10.149
+    version: 8.10.149
   '@types/node':
     specifier: ^20.11.0
     version: 20.17.47
@@ -633,6 +636,10 @@ packages:
 
   /@tsconfig/node16@1.0.4:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
+    dev: true
+
+  /@types/aws-lambda@8.10.149:
+    resolution: {integrity: sha512-NXSZIhfJjnXqJgtS7IwutqIF/SOy1Wz5Px4gUY1RWITp3AYTyuJS4xaXr/bIJY1v15XMzrJ5soGnPM+7uigZjA==}
     dev: true
 
   /@types/body-parser@1.19.5:
