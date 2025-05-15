@@ -7,6 +7,7 @@ import {
 } from "../types";
 import { SlackEventHandler } from "../handlers/slackEventHandler";
 import { availableFormat, availableText } from "../constants/whisper";
+import { TranscriptionService } from "./transcriptionService";
 
 type File = any; // TODO
 
@@ -18,11 +19,13 @@ export class MessageService {
   private event: any; //TODO: type
   private say: SayFn;
   private file: any;
+  private transcriptionService: TranscriptionService;
 
   constructor(e: SlackEventHandler, say: SayFn, f: File) {
     this.event = e;
     this.say = say;
     this.file = f;
+    this.transcriptionService = new TranscriptionService();
   }
 
   /**
@@ -64,18 +67,18 @@ export class MessageService {
     };
   }
 
-  public async requestEach(): Promise<SummaryResult> {
-    // const hoge = this.requestTranscription();
-    // const piyo = this.requestSummary();
-    return {
-      text: "これはダミーの要約結果です。実際の実装では、LLMのAPIを使用して要約を生成します。",
-      duration: 60,
-      requestType: "summary",
-    };
+  public async requestEach(): Promise<void> {
+    this.say("文字起こしと要約を開始しました。出力までしばらくお待ち下さい。");
+    const transcription = await this.transcriptionService.transcribeAudio(
+      this.file.url_private_download,
+      this.file.filetype
+    );
+    // TODO: 外部API接続サービス テキストを要約する。
+    const result = transcription;
+    this.say({ text: result.text });
   }
 
   public async doPing() {
-    console.log("pong");
     await this.say("pong");
   }
 
