@@ -1,0 +1,19 @@
+# AWS Region to deploy resources to
+aws_region = "ap-northeast-1"
+
+# Project name used as a prefix for resource names
+project_name = "slack-transcription"
+
+# Path to the Lambda deployment package zip file
+lambda_zip_path = "../deployment.zip"
+
+# Slack credentials (replace with actual values)
+slack_bot_token = "xoxb-your-bot-token"
+slack_signing_secret = "your-signing-secret"
+slack_app_token = "xapp-your-app-token"
+
+# OpenAI API credentials
+openai_api_key = "your-openai-api-key"
+
+# Whisper settings (optional)
+whisper_local_endpoint = "http://your-whisper-endpoint:port"
